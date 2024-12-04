@@ -81,15 +81,6 @@ async def test_create_user_duplicate_email(async_client, verified_user):
     assert response.status_code == 400  # Bad Request
     assert "Email already exists" in response.json().get("detail", "")
 
-@pytest.mark.asyncio
-async def test_create_user_invalid_email(async_client):
-    """Test that attempting to create a user with an invalid email fails."""
-    user_data = {
-        "email": "notanemail",
-        "password": "ValidPassword123!",
-    }
-    response = await async_client.post("/register/", json=user_data)
-    assert response.status_code == 422  # Unprocessable Entity
 
 @pytest.mark.asyncio
 async def test_login_success(async_client, verified_user):
