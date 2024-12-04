@@ -1,8 +1,8 @@
 import pytest
 from pydantic import ValidationError
-from datetime import datetime
 from uuid import UUID
-from app.schemas.user_schemas import UserBase, UserCreate, UserUpdate, UserResponse, UserListResponse, LoginRequest
+from datetime import datetime
+from app.schemas.user_schemas import LoginRequest, UserBase, UserCreate, UserUpdate, UserResponse, UserListResponse
 
 # Sample data fixture for UserBase
 @pytest.fixture
@@ -48,7 +48,7 @@ def user_response_data():
         'profile_picture_url': 'https://example.com/profile_pictures/john_doe.jpg',
         'role': 'AUTHENTICATED',
         'is_professional': False,
-        'last_login_at': datetime.now()  # Ensure this field is correctly included
+        'last_login_at': datetime.now()  # This is now a datetime object
     }
 
 # Sample data fixture for LoginRequest
@@ -57,21 +57,6 @@ def login_request_data():
     return {
         'email': 'john.doe@example.com',
         'password': 'password123'
-    }
-
-# Updated Sample data fixture for UserListResponse (with 'items' instead of 'users')
-@pytest.fixture
-def user_list_response_data():
-    return {
-        'page': 1,
-        'size': 10,
-        'total': 1,
-        'items': [{
-            'id': UUID('dce465ee-2519-43d1-9ec3-a21ddd108076'),  # Added UUID for item
-            'email': 'john.doe@example.com',
-            'full_name': 'John Doe',
-            'nickname': 'johndoe'
-        }]
     }
 
 # Tests for UserBase
@@ -93,11 +78,11 @@ def test_user_update_valid(user_update_data):
     assert user_update.first_name == user_update_data["first_name"]
     assert user_update.last_name == user_update_data["last_name"]
 
-# Tests for UserResponse
+# Tests for UserResponse (checking datetime format for last_login_at)
 def test_user_response_valid(user_response_data):
     user = UserResponse(**user_response_data)
     assert user.id == user_response_data["id"]
-    assert isinstance(user.last_login_at, datetime)
+    assert isinstance(user.last_login_at, datetime)  # Check if last_login_at is a datetime object
 
 # Tests for LoginRequest
 def test_login_request_valid(login_request_data):
@@ -147,7 +132,33 @@ def test_user_base_invalid_email(user_base_data_invalid):
         UserBase(**user_base_data_invalid)
     assert "value is not a valid email address" in str(exc_info.value)
 
-# Tests for UserListResponse (fixed with 'items' instead of 'users')
+# Tests for UserListResponse
+@pytest.fixture
+def user_list_response_data():
+    return {
+        'page': 1,
+        'size': 10,
+        'total': 2,
+        'items': [
+            {
+                'id': UUID('dce465ee-2519-43d1-9ec3-a21ddd108076'),
+                'email': 'john.doe@example.com',
+                'full_name': 'John Doe',
+                'nickname': 'johndoe',
+                'bio': 'I am a software engineer.',
+                'profile_picture_url': 'https://example.com/profile_pictures/john_doe.jpg',
+            },
+            {
+                'id': UUID('ba56f520-3d63-4207-a6bb-3724a9005b52'),
+                'email': 'jane.doe@example.com',
+                'full_name': 'Jane Doe',
+                'nickname': 'janedoe',
+                'bio': 'A full-stack developer.',
+                'profile_picture_url': 'https://example.com/profile_pictures/jane_doe.jpg',
+            }
+        ]
+    }
+
 def test_user_list_response_valid(user_list_response_data):
     user_list = UserListResponse(**user_list_response_data)
     assert len(user_list.items) == len(user_list_response_data["items"])
@@ -176,4 +187,10 @@ def test_user_list_response_missing_id():
     }
     with pytest.raises(ValidationError):
         UserListResponse(**user_list_response_invalid_data)
-        
+
+# Tests for optional `profile_picture_url` field being None
+def test_user_base_optional_profile_picture_url(user_base_data):
+    user_base_data["profile_picture_url"] = None
+    user = UserBase(**user_base_data)
+    assert user.profile_picture_url is None
+    
