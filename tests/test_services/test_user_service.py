@@ -200,7 +200,7 @@ async def test_verify_email_with_token(db_session, user):
     token = "valid_token_example"
     user.verification_token = token
     await db_session.commit()
-    result = await UserService.verify_email_with_token(db_session, user.id, token)
+    result = await UserService.verify_email_with_token(db_session, user.email, token)
     
     # Assertions
     assert result is True
