@@ -47,4 +47,16 @@ async def test_send_markdown_email(email_service):
         'email_verification',
         **user_data
     )
-    
+
+@pytest.mark.asyncio
+async def test_send_email_with_template_error(email_service):
+    """Test that errors in template rendering are caught."""
+    # Mock render_template to raise an error
+    email_service.template_manager.render_template = MagicMock(side_effect=ValueError("Template error"))
+
+    with pytest.raises(ValueError, match="Error rendering the email template"):
+        await email_service.send_user_email({
+            "email": "test@example.com",
+            "name": "Test User"
+        }, 'email_verification')
+        
