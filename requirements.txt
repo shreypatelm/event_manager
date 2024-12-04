@@ -1,7 +1,7 @@
 anyio==4.6.2.post1
 astroid==3.3.5
 blinker==1.4
-#command-not-found==0.3
+command-not-found==0.3
 coverage==7.6.4
 cryptography==3.4.8
 dbus-python==1.2.18
