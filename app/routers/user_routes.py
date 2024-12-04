@@ -33,9 +33,13 @@ from app.services.jwt_service import create_access_token
 from app.utils.link_generation import create_user_links, generate_pagination_links
 from app.dependencies import get_settings
 from app.services.email_service import EmailService
+
 router = APIRouter()
+
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
+
 settings = get_settings()
+
 @router.get("/users/{user_id}", response_model=UserResponse, name="get_user", tags=["User Management Requires (Admin or Manager Roles)"])
 async def get_user(user_id: UUID, request: Request, db: AsyncSession = Depends(get_db), token: str = Depends(oauth2_scheme), current_user: dict = Depends(require_role(["ADMIN", "MANAGER"]))):
     """
@@ -68,8 +72,7 @@ async def get_user(user_id: UUID, request: Request, db: AsyncSession = Depends(g
         last_login_at=user.last_login_at,
         created_at=user.created_at,
         updated_at=user.updated_at,
-        links=create_user_links(user.id, request)
-        
+        links=create_user_links(user.id, request)  
     )
 
 # Additional endpoints for update, delete, create, and list users follow a similar pattern, using
