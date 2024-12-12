@@ -4,7 +4,7 @@
 
 ## Closed Issues Documentation
 
-# [Issue #1: Username Validation Bug](https://github.com/shreypatelm/event_manager/issues/2)  
+# [Issue #1](https://github.com/shreypatelm/event_manager/issues/2)  
 **Title:** Test Fails Due to Incorrect Mocking of render_template in test_send_markdown_email  
 **Description:** render_template is mocked to return a MagicMock object, which is then passed as the HTML content to the send_email method. This causes the assert_called_once_with assertion to fail when checking the arguments passed to send_email.   
 **Resolution:**  
@@ -12,7 +12,7 @@
 
 ---
 
-# [Issue #2: Username Validation Bug](https://github.com/shreypatelm/event_manager/issues/4) 
+# [Issue #2](https://github.com/shreypatelm/event_manager/issues/4) 
 **Title:** Nickname Generation Logic
 **Description:** The nickname generation feature is not functioning as expected. Generated nicknames are either invalid, not unique, or fail to meet the specified criteria.  
 **Status:** Closed   
@@ -21,14 +21,14 @@
 
 ---
 
-# [Issue #3: Username Validation Bug](https://github.com/shreypatelm/event_manager/issues/6)  
+# [Issue #3](https://github.com/shreypatelm/event_manager/issues/6)  
 **Title:** Email Verification 
 **Description:** We use UUIDs for authentication. To enhance user-friendliness and security, we propose replacing the UUID with an email verification as every user has unique email address 
 **Resolution:**  
 - Enhanced security through email validation.
 ---
 
-# [Issue #4: Username Validation Bug](https://github.com/shreypatelm/event_manager/issues/8) 
+# [Issue #4](https://github.com/shreypatelm/event_manager/issues/8) 
 **Title:** Implement Strong Password Validation Logic 
 **Description:** Logic for robust password validation mechanism to enhance security
 **Resolution:**  
@@ -36,7 +36,7 @@
 
 ---
 
-# [Issue #5: Username Validation Bug](https://github.com/shreypatelm/event_manager/issues/10) 
+# [Issue #5](https://github.com/shreypatelm/event_manager/issues/10) 
 **Title:** Pagination validation Logic  
 **Description:** Negatyive pagination should be handled correctly 
 **Status:** Closed  
